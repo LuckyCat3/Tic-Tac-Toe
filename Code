@@ -191,6 +191,204 @@ namespace game1
 
         private void RestartGame(object sender, EventArgs e)
         {
+            wins = 0;using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml.Linq;
+
+namespace game1
+{
+    public partial class Form1 : Form
+    {
+        public int wins = 0;
+        public int modifier;
+        public int score;
+        public int x;
+        public int y;
+        public string difficulty;
+        public bool EnemyClick = true;
+        private Button[,] buttons = new Button[3, 3];
+        public Score[] records = new Score[15];
+        Random rand = new Random();
+        Label label1 = new Label();
+        Button button0 = new Button();
+        Button button1 = new Button();
+        Button button2 = new Button();
+        Button button3 = new Button();
+        Button button4 = new Button();
+
+        public Form1()
+        {
+            InitializeComponent();
+            this.Width = 370;
+            this.Height = 475;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            ButtonCreate();
+            MainMenu();
+        }
+
+        private void ButtonCreate()
+        {
+            label1.Text = "Побед подряд: 0";                                    //для меню
+            label1.Location = new Point(97, 21);
+            label1.Font = new Font(new FontFamily("Times New Roman"), 16);
+            label1.Size = new Size(180, 23);
+            this.Controls.Add(label1);
+
+            button2.Click += Dif;
+            button2.Size = new Size(140, 100);
+            button2.Font = new Font(new FontFamily("Times New Roman"), 16);
+            button2.Location = new Point(105, 300);
+            button2.Text = "Easy";
+            button2.Visible = false;
+            this.Controls.Add(button2);
+
+            button3.Click += Dif;
+            button3.Size = new Size(140, 100);
+            button3.Font = new Font(new FontFamily("Times New Roman"), 16);
+            button3.Location = new Point(105, 180);
+            button3.Text = "Normal";
+            button3.Visible = false;
+            this.Controls.Add(button3);
+
+            button4.Click += Dif;
+            button4.Size = new Size(140, 100);
+            button4.Font = new Font(new FontFamily("Times New Roman"), 16);
+            button4.Location = new Point(105, 60);
+            button4.Text = "Hard";
+            button4.Visible = false;
+            this.Controls.Add(button4);
+
+            button0.Click += NewGame;                                       //для игры
+            button0.Size = new Size(200, 32);
+            button0.Font = new Font(new FontFamily("Times New Roman"), 16);
+            button0.Location = new Point(125, 58);
+            button0.Text = "Новая Игра";
+            button0.Visible = false;
+            this.Controls.Add(button0);
+
+            button1.Click += RestartGame;
+            button1.Size = new Size(100, 32);
+            button1.Font = new Font(new FontFamily("Times New Roman"), 16);
+            button1.Location = new Point(25, 58);
+            button1.Text = "Заново";
+            button1.Visible = false;
+            this.Controls.Add(button1);
+
+
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                {
+                    buttons[i, j] = new Button();
+                    buttons[i, j].Size = new Size(100, 100);
+                    buttons[i, j].Location = new Point(25 + 100 * j, 100 + 100 * i);
+                    buttons[i, j].Font = new Font(new FontFamily("Times New Roman"), 48);
+                    buttons[i, j].Click += ButtonClick;
+                    buttons[i, j].Visible = false;
+                    this.Controls.Add(buttons[i, j]);
+                }
+        }
+
+        private void MainMenu()
+        {
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                {
+                    buttons[i, j].Visible = false;
+                }
+            button0.Visible = false;
+            button1.Visible = false;
+            button2.Visible = true;
+            button3.Visible = true;
+            button4.Visible = true;
+
+            label1.Text = "Выберите сложность";
+            label1.Location = new Point(80, 21);
+            label1.Font = new Font(new FontFamily("Times New Roman"), 16);
+            label1.Size = new Size(212, 23);
+            this.Controls.Add(label1);
+        }
+
+        private void Dif(object sender, EventArgs e)
+        {
+            switch (sender.GetType().GetProperty("Text").GetValue(sender))
+            {
+                case "Easy":
+                    difficulty = "Easy";
+                    modifier = 1;
+                    break;
+                case "Normal":
+                    difficulty = "Normal";
+                    modifier = 3;
+                    break;
+                case "Hard":
+                    difficulty = "Hard";
+                    modifier = 5;
+                    break;
+                default:
+                    MessageBox.Show("Что-то пошло не так");
+                    break;
+            }
+            GameStart();
+        }
+
+        private void GameStart()
+        {
+            button0.Visible = true;
+            button1.Visible = true;
+            button2.Visible = false;
+            button3.Visible = false;
+            button4.Visible = false;
+
+            label1.Text = "Побед подряд: 0";
+            label1.Location = new Point(97, 21);
+            label1.Font = new Font(new FontFamily("Times New Roman"), 16);
+            label1.Size = new Size(180, 23);
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                {
+                    buttons[i, j].Visible = true;
+                }
+        }
+
+        private void NewGame(object sender, EventArgs e)
+        {
+            wins = 0;
+            label1.Text = "Побед подряд: " + wins;
+            ResetBoard();
+            MainMenu();
+        }
+
+        private void ButtonClick(object sender, EventArgs e)
+        {
+            sender.GetType().GetProperty("Text").SetValue(sender, "X");
+            sender.GetType().GetProperty("Enabled").SetValue(sender, false);
+            EnemyClick = false;
+            WinСheck();
+            if (FullBoard() == true)
+            {
+                MessageBox.Show("Ничья");
+                EnemyClick = true;
+                ResetBoard();
+            }
+            EnemyTurn();
+            WinСheck();
+        }
+
+        private void RestartGame(object sender, EventArgs e)
+        {
+            score = wins * modifier;
+            saveScore();
             wins = 0;
             label1.Text = "Побед подряд: " + wins;
             ResetBoard();
@@ -215,6 +413,64 @@ namespace game1
                         return false;
                 }
             return true;
+        }
+
+        public class Score
+        {
+            public int score;
+            public int place;
+            public int modifier;
+            public string difficulty;
+
+            public Score()
+            {
+                this.score = 0;
+                this.place = 1;
+                this.modifier = 1;
+            }
+
+            public string Text()
+            {
+                return String.Format("{0}. {1}(x{2}) {3}", this.place, this.difficulty, this.modifier, this.score);
+            }
+
+            public void GetScore(string line)
+            {
+                if (line != null)
+                {
+                    int k = 0;
+                    while (!line[k].Equals('.'))
+                    {
+                        k++;
+                    }
+                    int.TryParse(line.Substring(0, k), out this.place);
+                    for (int j = 0; j < line.Length; j++)
+                    {
+                        k = 0;
+                        if (line[j].Equals('.'))
+                        {
+                            while (!line[j + k + 1].Equals('('))
+                            {
+                                k++;
+                            }
+                            this.difficulty = line.Substring(j + 2, k - 1);
+                        }
+                        k = 0;
+                        if (line[j].Equals('x'))
+                        {
+                            while (!line[j + k].Equals(')'))
+                            {
+                                k++;
+                            }
+                            int.TryParse(line.Substring(j + 1, k - 1), out this.modifier);
+                        }
+                        if (line[j].Equals(' '))
+                        {
+                            int.TryParse(line.Substring(j + 1), out this.score);
+                        }
+                    }
+                }
+            }
         }
 
         private void EnemyTurn()
@@ -286,13 +542,13 @@ namespace game1
                             }
                             player = 0;
                         }
-                    if (EnemyClick == false && buttons[0, 0].Text == "X" && buttons[2, 2].Text == "X")
+                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 0].Text == "X" && buttons[2, 2].Text == "X")
                     {
                         buttons[1, 1].Text = "0";
                         buttons[1, 1].Enabled = false;
                         EnemyClick = true;
                     }
-                    if (EnemyClick == false && buttons[0, 2].Text == "X" && buttons[2, 0].Text == "X")
+                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 2].Text == "X" && buttons[2, 0].Text == "X")
                     {
                         buttons[1, 1].Text = "0";
                         buttons[1, 1].Enabled = false;
@@ -364,13 +620,13 @@ namespace game1
                             }
                             player = 0;
                         }
-                    if (EnemyClick == false && buttons[0, 0].Text == "0" && buttons[2, 2].Text == "0")
+                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 0].Text == "0" && buttons[2, 2].Text == "0" )
                     {
                         buttons[1, 1].Text = "0";
                         buttons[1, 1].Enabled = false;
                         EnemyClick = true;
                     }
-                    if (EnemyClick == false && buttons[0, 2].Text == "0" && buttons[2, 0].Text == "0")
+                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 2].Text == "0" && buttons[2, 0].Text == "0")
                     {
                         buttons[1, 1].Text = "0";
                         buttons[1, 1].Enabled = false;
@@ -419,13 +675,13 @@ namespace game1
                             }
                             player = 0;
                         }
-                    if (EnemyClick == false && buttons[0, 0].Text == "X" && buttons[2, 2].Text == "X")
+                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 0].Text == "X" && buttons[2, 2].Text == "X")
                     {
                         buttons[1, 1].Text = "0";
                         buttons[1, 1].Enabled = false;
                         EnemyClick = true;
                     }
-                    if (EnemyClick == false && buttons[0, 2].Text == "X" && buttons[2, 0].Text == "X")
+                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 2].Text == "X" && buttons[2, 0].Text == "X")
                     {
                         buttons[1, 1].Text = "0";
                         buttons[1, 1].Enabled = false;
@@ -483,6 +739,8 @@ namespace game1
             {
                 if (buttons[i, 0].Text == "0" && buttons[i, 1].Text == "0" && buttons[i, 2].Text == "0")
                 {
+                    score = wins * modifier;
+                    saveScore();
                     wins = 0;
                     label1.Text = "Побед подряд: " + wins;
                     EnemyClick = true;
@@ -506,6 +764,8 @@ namespace game1
             {
                 if (buttons[0, i].Text == "0" && buttons[1, i].Text == "0" && buttons[2, i].Text == "0")
                 {
+                    score = wins * modifier;
+                    saveScore();
                     wins = 0;
                     label1.Text = "Побед подряд: " + wins;
                     EnemyClick = true;
@@ -524,6 +784,8 @@ namespace game1
             }
             else if (buttons[0, 0].Text == "0" && buttons[1, 1].Text == "0" && buttons[2, 2].Text == "0")
             {
+                score = wins * modifier;
+                saveScore();
                 wins = 0;
                 label1.Text = "Побед подряд: " + wins;
                 EnemyClick = true;
@@ -541,6 +803,8 @@ namespace game1
             }
             else if (buttons[0, 2].Text == "0" && buttons[1, 1].Text == "0" && buttons[2, 0].Text == "0")
             {
+                score = wins * modifier;
+                saveScore();
                 wins = 0;
                 label1.Text = "Побед подряд: " + wins;
                 EnemyClick = true;
@@ -548,6 +812,62 @@ namespace game1
                 ResetBoard();
             }
         
+        }
+
+        public void saveScore()
+        {
+            for (int i = 0; i < records.Length; i++)
+                records[i] = new Score();
+            string text = "Лучщая серия побед:";
+            string path = Directory.GetCurrentDirectory() + @"\Records.txt";
+            if (!File.Exists(path))
+            {
+                using (StreamWriter streamWriter = File.CreateText(path))
+                {
+                    streamWriter.WriteLine(text);
+                }
+            }
+            StreamReader sr = new StreamReader(path);
+            text = sr.ReadLine();
+            for (int i = 0; i < 15; i++)
+            {
+                string line = sr.ReadLine();
+                records[i].GetScore(line);
+            }
+            sr.Close();
+            StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8);
+            for (int i = 0; i < records.Length; i++)
+            {
+                if ((score > records[i].score) || (records[i] == null))
+                {
+                    Score[] temp = new Score[records.Length - i];
+                    for (int j = 0; j < temp.Length; j++)
+                        temp[j] = new Score();
+                    temp[0].score = score;
+                    temp[0].modifier = modifier;
+                    temp[0].difficulty = difficulty;
+                    temp[0].place = i + 1;
+                    for (int j = 1; j < temp.Length; j++)
+                    {
+                        temp[j] = records[i + j - 1];
+                        temp[j].place++;
+                    }
+                    for (int j = 0; j < temp.Length; j++)
+                    {
+                        records[i + j] = temp[j];
+                    }
+                    break;
+                }
+            }
+            for (int i = 0; i < records.Length; i++)
+            {
+                if (records[i].score != 0)
+                {
+                    text += "\n" + records[i].Text();
+                }
+            }
+            sw.WriteLine(text);
+            sw.Close();
         }
     }
 }
