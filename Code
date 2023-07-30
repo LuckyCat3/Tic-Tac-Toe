@@ -818,7 +818,7 @@ namespace game1
         {
             for (int i = 0; i < records.Length; i++)
                 records[i] = new Score();
-            string text = "Лучщая серия побед:";
+            string text = "Лучшие рекорды:";
             string path = Directory.GetCurrentDirectory() + @"\Records.txt";
             if (!File.Exists(path))
             {
