@@ -60,7 +60,7 @@ namespace game1
             button2.Size = new Size(160, 120);
             button2.Font = new Font(new FontFamily("Times New Roman"), 16);
             button2.Location = new Point(105, 390);
-            button2.Text = "Easy";
+            button2.Text = "Лёгкая";
             button2.Visible = false;
             this.Controls.Add(button2);
 
@@ -68,7 +68,7 @@ namespace game1
             button3.Size = new Size(160, 120);
             button3.Font = new Font(new FontFamily("Times New Roman"), 16);
             button3.Location = new Point(105, 240);
-            button3.Text = "Normal";
+            button3.Text = "Средняя";
             button3.Visible = false;
             this.Controls.Add(button3);
 
@@ -76,7 +76,7 @@ namespace game1
             button4.Size = new Size(160, 120);
             button4.Font = new Font(new FontFamily("Times New Roman"), 16);
             button4.Location = new Point(105, 90);
-            button4.Text = "Hard";
+            button4.Text = "Сложная";
             button4.Visible = false;
             this.Controls.Add(button4);
 
@@ -171,16 +171,16 @@ namespace game1
         {
             switch (sender.GetType().GetProperty("Text").GetValue(sender))
             {
-                case "Easy":
-                    difficulty = "Easy";
+                case "Лёгкая":
+                    difficulty = "Лёгкая";
                     modifier = 1;
                     break;
-                case "Normal":
-                    difficulty = "Normal";
+                case "Средняя":
+                    difficulty = "Средняя";
                     modifier = 3;
                     break;
-                case "Hard":
-                    difficulty = "Hard";
+                case "Сложная":
+                    difficulty = "Сложная";
                     modifier = 5;
                     break;
                 default:
@@ -349,7 +349,7 @@ namespace game1
             int player;
             switch (difficulty)
             {
-                case "Easy":                                                //нет стратегии
+                case "Лёгкая":                                                //нет стратегии
                     while (EnemyClick == false && FullBoard() == false)
                     {
                         x = rand.Next(0, 3);
@@ -362,7 +362,7 @@ namespace game1
                         }
                     }
                     break;
-                case "Normal":
+                case "Средняя":
                     player = 0;
                     if (eturn == "0" && EnemyClick == false && buttons[1, 1].Enabled == true) //если отдали середину
                     {
@@ -439,7 +439,7 @@ namespace game1
                         }
                     }
                     break;
-                case "Hard":
+                case "Сложная":
                     player = 0;
                     if (eturn == "0" && EnemyClick == false && buttons[1, 1].Enabled == true) //если отдали середину
                     {
@@ -490,7 +490,7 @@ namespace game1
                             }
                             player = 0;
                         }
-                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 0].Text == eturn && buttons[2, 2].Text == eturn )
+                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 0].Text == eturn && buttons[2, 2].Text == eturn)
                     {
                         buttons[1, 1].Text = eturn;
                         buttons[1, 1].Enabled = false;
@@ -728,7 +728,7 @@ namespace game1
             for (int i = 0; i < records.Length; i++)
                 records[i] = new Score();
             string text = "Лучшие рекорды:";
-            string path = Directory.GetCurrentDirectory() + @"\Records.txt";
+            string path = Directory.GetCurrentDirectory() + @"\Рекорды.txt";
             if (!File.Exists(path))
             {
                 using (StreamWriter streamWriter = File.CreateText(path))
