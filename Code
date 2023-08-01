@@ -390,7 +390,7 @@ namespace game1
                                     break;
                                 }
                             }
-                            player = 0;
+                            player = 0; 
                         }
                     if (EnemyClick == false)
                         for (int j = 0; j < 3; j++)
@@ -413,18 +413,44 @@ namespace game1
                             }
                             player = 0;
                         }
-                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 0].Text == pturn && buttons[2, 2].Text == pturn)
-                    {
-                        buttons[1, 1].Text = eturn;
-                        buttons[1, 1].Enabled = false;
-                        EnemyClick = true;
-                    }
-                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 2].Text == pturn && buttons[2, 0].Text == pturn)
-                    {
-                        buttons[1, 1].Text = eturn;
-                        buttons[1, 1].Enabled = false;
-                        EnemyClick = true;
-                    }
+                    if (EnemyClick == false)
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (buttons[i, i].Text == pturn)
+                                player++;
+                            if (player == 2)
+                            {
+                                for (int k = 0; k < 3; k++)
+                                    if (buttons[k, k].Enabled == true)
+                                    {
+                                        buttons[k, k].Text = eturn;
+                                        buttons[k, k].Enabled = false;
+                                        EnemyClick = true;
+                                    }
+                                break;
+
+                            }
+                        }
+                    player = 0;
+                    if (EnemyClick == false)
+                        for (int i = 2; i < -1; i++)
+                        {
+                            if (buttons[i, 2-i].Text == pturn)
+                                player++;
+                            if (player == 2)
+                            {
+                                for (int k = 2; k < -1; k++)
+                                    if (buttons[k, 2-k].Enabled == true)
+                                    {
+                                        buttons[k, 2-k].Text = eturn;
+                                        buttons[k, 2-k].Enabled = false;
+                                        EnemyClick = true;
+                                    }
+                                break;
+
+                            }
+                        }
+                    player = 0;
 
 
                     while (EnemyClick == false && FullBoard() == false)                 //нет стратегии
@@ -490,18 +516,44 @@ namespace game1
                             }
                             player = 0;
                         }
-                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 0].Text == eturn && buttons[2, 2].Text == eturn)
-                    {
-                        buttons[1, 1].Text = eturn;
-                        buttons[1, 1].Enabled = false;
-                        EnemyClick = true;
-                    }
-                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 2].Text == eturn && buttons[2, 0].Text == eturn)
-                    {
-                        buttons[1, 1].Text = eturn;
-                        buttons[1, 1].Enabled = false;
-                        EnemyClick = true;
-                    }
+                    if (EnemyClick == false)
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (buttons[i, i].Text == eturn)
+                                player++;
+                            if (player == 2)
+                            {
+                                for (int k = 0; k < 3; k++)
+                                    if (buttons[k, k].Enabled == true)
+                                    {
+                                        buttons[k, k].Text = eturn;
+                                        buttons[k, k].Enabled = false;
+                                        EnemyClick = true;
+                                    }
+                                break;
+
+                            }
+                        }
+                    player = 0;
+                    if (EnemyClick == false)
+                        for (int i = 2; i < -1; i++)
+                        {
+                            if (buttons[i, 2 - i].Text == eturn)
+                                player++;
+                            if (player == 2)
+                            {
+                                for (int k = 2; k < -1; k++)
+                                    if (buttons[k, 2 - k].Enabled == true)
+                                    {
+                                        buttons[k, 2 - k].Text = eturn;
+                                        buttons[k, 2 - k].Enabled = false;
+                                        EnemyClick = true;
+                                    }
+                                break;
+
+                            }
+                        }
+                    player = 0;
 
                     if (EnemyClick == false)                                //защита
                         for (int i = 0; i < 3; i++)
@@ -545,18 +597,44 @@ namespace game1
                             }
                             player = 0;
                         }
-                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 0].Text == pturn && buttons[2, 2].Text == pturn)
-                    {
-                        buttons[1, 1].Text = eturn;
-                        buttons[1, 1].Enabled = false;
-                        EnemyClick = true;
-                    }
-                    if (EnemyClick == false && buttons[1, 1].Enabled == true && buttons[0, 2].Text == pturn && buttons[2, 0].Text == pturn)
-                    {
-                        buttons[1, 1].Text = eturn;
-                        buttons[1, 1].Enabled = false;
-                        EnemyClick = true;
-                    }
+                    if (EnemyClick == false)
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (buttons[i, i].Text == pturn)
+                                player++;
+                            if (player == 2)
+                            {
+                                for (int k = 0; k < 3; k++)
+                                    if (buttons[k, k].Enabled == true)
+                                    {
+                                        buttons[k, k].Text = eturn;
+                                        buttons[k, k].Enabled = false;
+                                        EnemyClick = true;
+                                    }
+                                break;
+
+                            }
+                        }
+                    player = 0;
+                    if (EnemyClick == false)
+                        for (int i = 2; i < -1; i++)
+                        {
+                            if (buttons[i, 2 - i].Text == pturn)
+                                player++;
+                            if (player == 2)
+                            {
+                                for (int k = 2; k < -1; k++)
+                                    if (buttons[k, 2 - k].Enabled == true)
+                                    {
+                                        buttons[k, 2 - k].Text = eturn;
+                                        buttons[k, 2 - k].Enabled = false;
+                                        EnemyClick = true;
+                                    }
+                                break;
+
+                            }
+                        }
+                    player = 0;
 
 
                     while (EnemyClick == false && FullBoard() == false)                 //нет стратегии
